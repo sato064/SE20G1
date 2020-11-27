@@ -1,0 +1,46 @@
+version: "3" # docker-composeのバージョンを指定
+services:
+    gradle:
+        container_name: local_se00g0
+        build:
+            context: ../../
+            dockerfile: ./docker/local/java/Dockerfile
+        working_dir: /app
+        volumes:
+            - ../../../SE00G0:/app:cached
+        environment:
+            DRIVER_URL: jdbc:mysql://se00g0_db:3306/db?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+        ports:
+            - "8080:8080"
+        privileged: true
+        tty: true
+        command:  >
+            sh -c '
+                ./gradlew 
+                wait-for-it.sh local_se00g0_db:3306 --timeout=30 -- ./gradlew tomcatRun
+            '
+        networks:
+            - se00g0-network
+
+    mysql:
+        container_name: local_se00g0_db
+        build:
+            context: ../../
+            dockerfile: ./docker/local/mysql/Dockerfile
+        ports:
+            - "3306:3306"
+        command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+        environment:
+            TZ: "Asia/Tokyo"
+            MYSQL_DATABASE: db
+            MYSQL_USER: test
+            MYSQL_PASSWORD: test
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - "./mysql/init:/docker-entrypoint-initdb.d"
+        networks:
+            - se00g0-network
+
+networks:
+    se00g0-network:
+        driver: bridge

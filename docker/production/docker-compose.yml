@@ -1,0 +1,15 @@
+version: "3"
+services:
+  app:
+    container_name: se00g0_app
+    build:
+      context: ../../
+      dockerfile: ./docker/production/java/Dockerfile
+    image: onyx.u-gakugei.ac.jp/se00g0_app
+
+  mysql:
+    container_name: se00g0_db
+    build:
+      context: ../../
+      dockerfile: ./docker/production/mysql/Dockerfile
+    image: onyx.u-gakugei.ac.jp/se00g0_db

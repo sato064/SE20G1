@@ -1,0 +1,225 @@
+@startuml SE20G1
+title:(献立作成アプリ）
+left to right direction
+
+
+' ユーザ
+
+class student{
+  int id
+  String password
+  String name
+  int gender
+  String school
+  String grade
+  String class
+  String number
+  float physi_act_intensity
+  datetime created_at
+  datetime updated_at
+}
+
+class teacher{
+  int id
+  String name
+  String school
+  datetime created_at
+  datetime updated_at
+}
+
+
+' チーム
+
+class team{
+  int id
+  String name
+  int teacher_id
+}
+
+class team_student{
+  int team_id
+  int user_id
+}
+
+
+' 献立
+
+class planforday{
+  int id
+  String name
+  int user_id
+  datetime created_at
+}
+
+class scene{
+  int id
+  String name
+  int planforday_id
+  datetime created_at
+  datetime updated_at
+}
+
+class category{
+  int id
+  String name
+  int planforday_id
+  int scene_id
+  datetime created_at
+  datetime updated_at
+}
+
+class menu{
+  int id
+  String name
+  float quantity
+  int planforday_id
+  int scene_id
+  int category_id
+  datetime created_at
+  datetime updated_at
+}
+
+class menu_ingredient{
+  int id
+  float quantity
+  int menu_id
+  int ingredients_id
+  datetime created_at
+  datetime updated_at
+}
+
+class ingredient{
+  int id
+  int group_id
+  String name
+  int base_quantity
+  float points
+  int disposal_rate
+  int energy
+  float water
+  float protein
+  float total_fat
+  float saturated_fat
+  float monounsaturated_fatty_acid
+  float polyunsaturated_fatty_acid
+  float cholesterol
+  float total_carbohydrate
+  float water_soluble_dietary_fiber
+  float insoluble_dietary_fiber
+  float total_dietary_fiberash
+  float ash
+  float sodium
+  float potassium
+  float calcium
+  float magnesium
+  float rin
+  float iron
+  float zinc
+  float copper
+  float manganese
+  float lodine
+  float selenium
+  float chromium
+  float molybdenum
+  float retinol_activity_equivalents
+  float vitamin_d
+  float alpha_tocopherol
+  float vitamin_k
+  float vitamin_b1
+  float vitamin_b2
+  float niacin
+  float niacin_equivalent
+  float vitamin_b6
+  float vitamin_b12
+  float folate
+  float pantothenic_acid
+  float biotin
+  float vitamin_c
+  float salt_equivalents
+  float starch
+  float glucose
+  float fructose
+  float galactose
+  float sucrose
+  float maltose
+  float lactose
+  float trehalose
+  float sorbitol
+  float mannitol
+  float quantity_of_fatty_acid
+  float saturated_fatty_acid
+  float monounsaturated_fatty_acids
+  float polyunsaturated_fatty_acids
+  float n_3_polyunsaturated_fatty_acids
+  float n_6_polyunsaturated_fatty_acids
+  float butyric_acid_4_0
+  float caproic_acid_6_0
+  float enanthic_acid_7_0
+  float octanoic_acid_8_0
+  float decanoic_acid_10_0
+  float lauric_acid_12_0
+  float tridecanoic_acid_13_0
+  float myristic_acid_14_0
+  float pentadecylic_acid_15_0
+  float pentadecylic_acid_15_0ant
+  float palmitic_acid_16_0
+  float palmitic_acid_16_0iso
+  float heptadecanic_acid_17_0
+  float heptadecanic_acid_17_0ant
+  float stearic_acid_18_0
+  float arachidic_acid_20_0
+  float behenic_acid_20_0
+  float lignoceric_acid_24_0
+  float decenoic_acid_10_1
+  float myristoleic_acid_14_1
+  float pentadecenoic_acid_15_1
+  float palmitoleic_acid_16_1
+  float heptadecenoic_acid_17_1
+  float n_9_oleic_acid_18_1
+  float n_7_sith_vaccenic_acid_18_1
+  float icosenoic_acid_20_1
+  float docosenoic_acid_20_1
+  float tetracosane_acid_21_1
+  float hexadecadienoic_acid_16_2
+  float hexadecatrienoic_acid_16_3
+  float hexadecatetraenoic_acid_16_4
+  float heptadecadienoic_acid_17_2
+  float heptadecadienoic_acid_18_2
+  float n_6_linoleic_acid_18_2
+  float octadecatrienoic_acid_18_3
+  float n_3_alpha_linolenic_acid_18_3
+  float n_6_gamma_linolenic_acid_18_3
+  float n_3_octadecatetraenoic_acid_18_4
+  float n_6_icosadienoic_acid_20_2
+  float n_6_Icosatrienoic_acid_20_3
+  float n_3_eicosatetraenoic_acid_20_4
+  float n_6_arachidonic_acid_20_4
+  float n_3_eicosapentaenoic_acid_20_5
+  float n_3_eicosapentaenoic_acid_21_5
+  float docosadienoic_acid_22_2
+  float n_6_docosatetraenoic_acid_22_4
+  float n_3_docosapentaenoic_acid_22_5
+  float n_6_docosapentaenoic_acid_22_5
+  float n_3_docosahexaenoic_acid_22_6
+  datetime created_at
+  datetime updated_at
+}
+
+
+' 関係を定義
+
+student "1"--"0..*" team_student :▶︎所属する
+team_student "0..*"--"1" team :◀︎所属される
+teacher "1"--"0..*" team :▶︎作成する
+
+student "1"--"0..*" planforday :▶︎作成する
+teacher "1"--"0..*" planforday :▶︎作成する
+
+planforday "1"*--"0..*" scene
+scene "1"*--"0..*" category
+category "1"*--"0..*" menu
+menu "1"--"0..*" menu_ingredient
+menu_ingredient "0..*"--"1" ingredient
+
+
+@enduml
